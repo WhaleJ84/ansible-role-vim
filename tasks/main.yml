@@ -1,2 +1,10 @@
 ---
-# tasks file for whalej84.vim
+- name: INSTALL | vim
+  tags:
+    - install
+  block:
+    - name: INSTALL | Ensure vim is installed
+      become: True
+      ansible.builtin.apt:
+        name: vim
+        state: present
