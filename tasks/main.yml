@@ -17,8 +17,10 @@
       ansible.builtin.find:
         paths: "{{ ansible_user_dir }}"
         recurse: True
-        patterns: '*vimrc'
-        use_regex: True
+        patterns:
+          - '.vimrc'
+          - 'vimrc'
+        file_type: file
       register: vimrc_files
 
     - name: Show found vimrc files
