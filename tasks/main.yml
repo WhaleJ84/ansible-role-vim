@@ -34,6 +34,9 @@
       ansible.builtin.command:
         cmd: mv "{{ item.path }}" "{{ MYVIMRC | dirname }}/"
       with_items: "{{ vimrc_files.files }}"
-      when: MYVIMRC is defined
+      when:
+        - MYVIMRC is defined
+        - item.path != (MYVIMRC | dirname + '/' + item.path | basename)
       loop_control:
         label: "{{ item.path }}"
+
