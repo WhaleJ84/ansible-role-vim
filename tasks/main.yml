@@ -29,3 +29,11 @@
         path: "{{ MYVIMRC | dirname }}"
         state: directory
       when: MYVIMRC is defined
+
+    - name: CONFIGURE | Move found vimrc files to MYVIMRC dirname
+      ansible.builtin.command:
+        cmd: mv "{{ item.path }}" "{{ MYVIMRC | dirname }}/"
+      with_items: "{{ vimrc_files.files }}"
+      when: MYVIMRC is defined
+      loop_control:
+        label: "{{ item.path }}"
