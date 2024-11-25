@@ -26,6 +26,6 @@
 
     - name: CONFIGURE | Ensure VIMRC path exists when set
       ansible.builtin.file:
-        path: "{{ MYVIMRC | basename }}"
+        path: "{{ MYVIMRC | dirname }}"
         state: directory
       when: MYVIMRC is defined
