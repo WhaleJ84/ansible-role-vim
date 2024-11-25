@@ -13,7 +13,7 @@
   tags:
   - configure
   block:
-    - name: CONFIGURE | Find vim config file
+    - name: CONFIGURE | Find existing vim config files
       ansible.builtin.find:
         paths: "{{ ansible_user_dir }}"
         recurse: True
@@ -24,6 +24,8 @@
         file_type: file
       register: vimrc_files
 
-    - name: Show found vimrc files
-      debug:
-        var: vimrc_files.files
+    - name: CONFIGURE | Ensure VIMRC path exists when set
+      ansible.builtin.file:
+        path: "{{ MYVIMRC | basename }}"
+        state: directory
+      when: MYVIMRC is defined
