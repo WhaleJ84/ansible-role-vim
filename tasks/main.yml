@@ -17,6 +17,7 @@
       ansible.builtin.find:
         paths: "{{ ansible_user_dir }}"
         recurse: True
+        hidden: True
         patterns:
           - '.vimrc'
           - 'vimrc'
