@@ -8,3 +8,19 @@
       ansible.builtin.apt:
         name: vim
         state: present
+
+- name: CONFIGURE | vim
+  tags:
+  - configure
+  block:
+    - name: CONFIGURE | Find vim config file
+      ansible.builtin.find:
+        paths: "{{ ansible_user_dir }}"
+        recurse: True
+        patterns: '*vimrc'
+        use_regex: True
+      register: vimrc_files
+
+    - name: Show found vimrc files
+      debug:
+        var: vimrc_files.files
