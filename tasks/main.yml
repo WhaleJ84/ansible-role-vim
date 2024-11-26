@@ -30,6 +30,14 @@
         state: directory
       when: MYVIMRC is defined
 
+    - name: CONFIGURE | Ensure VIMRC folders exist when set
+      ansible.builtin.file:
+        path: "{{ MYVIMRC | dirname }}/{{ item }}"
+        state: directory
+      when: MYVIMRC is defined
+      with_items:
+        - autoload
+
     - name: CONFIGURE | Move found vimrc files to MYVIMRC dirname
       ansible.builtin.command:
         cmd: mv "{{ item.path }}" "{{ MYVIMRC | dirname }}/"
@@ -39,4 +47,34 @@
         - item.path != (MYVIMRC | dirname + '/' + item.path | basename)
       loop_control:
         label: "{{ item.path }}"
+
+    - name: CONFIGURE | Ensure runtimepath is configured in vimrc
+      ansible.builtin.lineinfile:
+        create: True
+        path: "{{ MYVIMRC }}"
+        line: "set runtimepath^={{ MYVIMRC | dirname }}"
+        insertbefore: BOF
+      when: MYVIMRC is defined
+
+    - name: CONFIGURE | Ensure vim-plug is installed
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        dest: "{{ MYVIMRC | dirname }}/autoload/"
+      when: MYVIMRC is defined
+
+    - name: CONFIGURE | Ensure plug#begin statement is present in vimrc
+      ansible.builtin.lineinfile:
+        create: True
+        path: "{{ MYVIMRC }}"
+        line: "call plug#begin()"
+        insertbefore: "call plug#end()"
+      when: MYVIMRC is defined
+
+    - name: CONFIGURE | Ensure plug#end statement is present in vimrc
+      ansible.builtin.lineinfile:
+        create: True
+        path: "{{ MYVIMRC }}"
+        line: "call plug#end()"
+        insertafter: "call plug#begin()"
+      when: MYVIMRC is defined
 
