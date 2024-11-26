@@ -8,6 +8,14 @@
       ansible.builtin.apt:
         name: vim
         state: present
+  
+    - name: INSTALL | Ensure plugin requirements are installed
+      become: True
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ APT_REQUIREMENTS }}"
+      when: APT_REQUIREMENTS is defined
 
 - name: CONFIGURE | vim
   tags:
