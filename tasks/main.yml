@@ -86,3 +86,11 @@
         insertafter: "call plug#begin()"
       when: MYVIMRC is defined
 
+    - name: CONFIGURE | Ensure plugins are added to vimrc
+      ansible.builtin.lineinfile:
+        create: True
+        path: "{{ MYVIMRC }}"
+        line: "{{ item }}"
+        insertbefore: "call plug#end()"
+      with_items: "{{ VIM_PLUG_PLUGINS }}"
+      when: VIM_PLUG_PLUGINS is defined and MYVIMRC is defined
