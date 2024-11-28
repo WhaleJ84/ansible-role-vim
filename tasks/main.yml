@@ -91,7 +91,7 @@
         create: True
         path: "{{ VIMRC }}"
         block: "{{ item.LINE }}"
-        marker: "{{ item.COMMENT }}"
+        marker: "\" {mark} {{ item.COMMENT }}"
         insertafter: "call plugin#end()"
       with_items: "{{ MODIFICATIONS }}"
       when: MODIFICATIONS is defined
