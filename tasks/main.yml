@@ -1,7 +1,6 @@
 ---
 - name: INSTALL | vim
-  tags:
-    - install
+  tags: [ install ]
   block:
     - name: INSTALL | Ensure vim is installed
       become: True
