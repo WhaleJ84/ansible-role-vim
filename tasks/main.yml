@@ -86,3 +86,13 @@
         insertbefore: "call plug#end()"
       with_items: "{{ VIM_PLUG_PLUGINS }}"
       when: VIM_PLUG_PLUGINS is defined
+
+    - name: CONFIGURE | Ensure modifications are configured
+      ansible.builtin.blockinfile:
+        create: True
+        path: "{{ VIMRC }}"
+        block: "{{ item.LINE }}"
+        marker: "{{ item.COMMENT }}"
+        insertafter: "call plugin#end()"
+      with_items: "{{ MODIFICATIONS }}"
+      when: MODIFICATIONS is defined
