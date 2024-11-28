@@ -18,8 +18,7 @@
       when: APT_REQUIREMENTS is defined
 
 - name: CONFIGURE | vim
-  tags:
-  - configure
+  tags: [ configure ]
   block:
     - name: CONFIGURE | Find existing vim config files
       ansible.builtin.find:
