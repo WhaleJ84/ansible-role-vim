@@ -1,2 +1,2 @@
 ---
-#MYVIMRC:
+VIMRC: "{{ ansible_user_dir }}/.vim/vimrc"
