@@ -1,13 +1,13 @@
 ---
 - name: INSTALL | vim
-  tags: [ install ]
+  tags: [install]
   block:
     - name: INSTALL | Ensure vim is installed
       become: True
       ansible.builtin.apt:
         name: vim
         state: present
-  
+
     - name: INSTALL | Ensure plugin requirements are installed
       become: True
       ansible.builtin.apt:
@@ -17,7 +17,7 @@
       when: APT_REQUIREMENTS is defined
 
 - name: CONFIGURE | vim
-  tags: [ configure ]
+  tags: [configure]
   block:
     - name: CONFIGURE | Find existing vim config files
       ansible.builtin.find:
