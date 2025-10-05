@@ -85,7 +85,11 @@
           ansible.builtin.blockinfile:
             create: true
             path: "{{ VIMRC }}"
-            block: "{{ item.LINE }}"
-            marker: "\" {mark} {{ item.COMMENT }}"
+            block: "{{ item.1.LINE }}"
+            marker: "\" {mark} {{ item.1.COMMENT }}"
             insertafter: "call plugin#end()"
-          with_items: "{{ MODIFICATIONS }}"
+          loop: "{{ query('ansible.builtin.subelements',
+                          VIM_PLUG_PLUGINS | selectattr('VARS', 'defined') | list,
+                          'VARS') }}"
+          loop_control:
+            label: "{{ item.0.PLUG }}"
