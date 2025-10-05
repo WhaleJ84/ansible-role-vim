@@ -3,13 +3,13 @@
   tags: [install]
   block:
     - name: INSTALL | Ensure vim is installed
-      become: True
+      become: true
       ansible.builtin.apt:
         name: vim
         state: present
 
     - name: INSTALL | Ensure plugin requirements are installed
-      become: True
+      become: true
       ansible.builtin.apt:
         name: "{{ item }}"
         state: present
@@ -22,8 +22,8 @@
     - name: CONFIGURE | Find existing vim config files
       ansible.builtin.find:
         paths: "{{ ansible_user_dir }}"
-        recurse: True
-        hidden: True
+        recurse: true
+        hidden: true
         patterns:
           - '.vimrc'
           - 'vimrc'
@@ -58,14 +58,14 @@
 
     - name: CONFIGURE | Ensure plug#begin statement is present in vimrc
       ansible.builtin.lineinfile:
-        create: True
+        create: true
         path: "{{ VIMRC }}"
         line: "call plug#begin()"
         insertbefore: "call plug#end()"
 
     - name: CONFIGURE | Ensure plug#end statement is present in vimrc
       ansible.builtin.lineinfile:
-        create: True
+        create: true
         path: "{{ VIMRC }}"
         line: "call plug#end()"
         insertafter: "call plug#begin()"
@@ -73,7 +73,7 @@
     - block:
       - name: CONFIGURE | Ensure plugins are added to vimrc
         ansible.builtin.lineinfile:
-          create: True
+          create: true
           path: "{{ VIMRC }}"
           line: "Plug {{ item.PLUG }}"
           insertbefore: "call plug#end()"
@@ -81,7 +81,7 @@
 
       - name: CONFIGURE | Ensure modifications are configured
         ansible.builtin.blockinfile:
-          create: True
+          create: true
           path: "{{ VIMRC }}"
           block: "{{ item.LINE }}"
           marker: "\" {mark} {{ item.COMMENT }}"
