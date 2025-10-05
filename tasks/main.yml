@@ -70,21 +70,22 @@
         line: "call plug#end()"
         insertafter: "call plug#begin()"
 
-    - block:
-      - name: CONFIGURE | Ensure plugins are added to vimrc
-        ansible.builtin.lineinfile:
-          create: true
-          path: "{{ VIMRC }}"
-          line: "Plug {{ item.PLUG }}"
-          insertbefore: "call plug#end()"
-        with_items: "{{ VIM_PLUG_PLUGINS }}"
-
-      - name: CONFIGURE | Ensure modifications are configured
-        ansible.builtin.blockinfile:
-          create: true
-          path: "{{ VIMRC }}"
-          block: "{{ item.LINE }}"
-          marker: "\" {mark} {{ item.COMMENT }}"
-          insertafter: "call plugin#end()"
-        with_items: "{{ MODIFICATIONS }}"
+    - name: BLOCK | Configure plugins
       when: VIM_PLUG_PLUGINS is defined
+      block:
+        - name: CONFIGURE | Ensure plugins are added to vimrc
+          ansible.builtin.lineinfile:
+            create: true
+            path: "{{ VIMRC }}"
+            line: "Plug {{ item.PLUG }}"
+            insertbefore: "call plug#end()"
+          with_items: "{{ VIM_PLUG_PLUGINS }}"
+
+        - name: CONFIGURE | Ensure modifications are configured
+          ansible.builtin.blockinfile:
+            create: true
+            path: "{{ VIMRC }}"
+            block: "{{ item.LINE }}"
+            marker: "\" {mark} {{ item.COMMENT }}"
+            insertafter: "call plugin#end()"
+          with_items: "{{ MODIFICATIONS }}"
